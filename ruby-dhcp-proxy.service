@@ -1,0 +1,16 @@
+[Unit]
+Description=Ruby Proxy API for internal DHCP FreeIPs
+After=network.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+WorkingDirectory=/usr/share/ruby-dhcp-proxy
+User=root
+Group=root
+
+ExecStart=/bin/bundle exec ruby main.rb
+ExecStop=/usr/bin/ps aux | /usr/bin/grep -v grep | /usr/bin/grep 'Satellite DHCP Proxy API' | /usr/bin/awk '{print $2}' | /usr/bin/xargs kill -9
+
+[Install]
+WantedBy=multi-user.target
